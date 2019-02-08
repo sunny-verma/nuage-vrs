@@ -181,7 +181,7 @@ class OpenStackAmuletDeployment(AmuletDeployment):
         """
         self.log.info('Waiting for extended status on units...')
 
-        all_services = self.d.services.keys()
+        all_services = list(self.d.services.keys())
 
         if exclude_services and include_only:
             raise ValueError('exclude_services can not be used '
@@ -229,7 +229,7 @@ class OpenStackAmuletDeployment(AmuletDeployment):
          self.trusty_icehouse, self.trusty_juno, self.utopic_juno,
          self.trusty_kilo, self.vivid_kilo, self.trusty_liberty,
          self.wily_liberty, self.trusty_mitaka,
-         self.xenial_mitaka) = range(14)
+         self.xenial_mitaka) = list(range(14))
 
         releases = {
             ('precise', None): self.precise_essex,

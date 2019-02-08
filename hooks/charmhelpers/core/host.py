@@ -507,7 +507,7 @@ def pwgen(length=None):
     """Generate a random pasword."""
     if length is None:
         # A random length is ok to use a weak PRNG
-        length = random.choice(range(35, 45))
+        length = random.choice(list(range(35, 45)))
     alphanumeric_chars = [
         l for l in (string.ascii_letters + string.digits)
         if l not in 'l0QD1vAEIOUaeiou']

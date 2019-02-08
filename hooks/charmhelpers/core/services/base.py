@@ -163,7 +163,7 @@ class ServiceManager(object):
         a chance to generate any data necessary for the providing to the remote
         services.
         """
-        for service_name, service in self.services.items():
+        for service_name, service in list(self.services.items()):
             service_ready = self.is_ready(service_name)
             for provider in service.get('provided_data', []):
                 for relid in hookenv.relation_ids(provider.name):
@@ -186,7 +186,7 @@ class ServiceManager(object):
 
         If no service names are given, reconfigures all registered services.
         """
-        for service_name in service_names or self.services.keys():
+        for service_name in service_names or list(self.services.keys()):
             if self.is_ready(service_name):
                 self.fire_event('data_ready', service_name)
                 self.fire_event('start', service_name, default=[
@@ -207,7 +207,7 @@ class ServiceManager(object):
 
         If no service names are given, stops all registered services.
         """
-        for service_name in service_names or self.services.keys():
+        for service_name in service_names or list(self.services.keys()):
             self.fire_event('stop', service_name, default=[
                 manage_ports,
                 service_stop])

@@ -32,7 +32,7 @@ import six
 if six.PY3:
     from urllib.parse import urlparse, urlunparse
 else:
-    from urlparse import urlparse, urlunparse
+    from urllib.parse import urlparse, urlunparse
 
 
 CLOUD_ARCHIVE = """# Ubuntu Cloud Archive

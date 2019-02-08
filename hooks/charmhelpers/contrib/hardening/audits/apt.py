@@ -14,8 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with charm-helpers.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import  # required for external apt import
-from apt import apt_pkg
+  # required for external apt import
+from .apt import apt_pkg
 from six import string_types
 
 from charmhelpers.fetch import (

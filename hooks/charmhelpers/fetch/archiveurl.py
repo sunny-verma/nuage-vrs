@@ -37,13 +37,13 @@ if six.PY3:
     from urllib.parse import urlparse, urlunparse, parse_qs
     from urllib.error import URLError
 else:
-    from urllib import urlretrieve
+    from urllib.request import urlretrieve
     from urllib2 import (
         build_opener, install_opener, urlopen,
         HTTPPasswordMgrWithDefaultRealm, HTTPBasicAuthHandler,
         URLError
     )
-    from urlparse import urlparse, urlunparse, parse_qs
+    from urllib.parse import urlparse, urlunparse, parse_qs
 
 
 def splituser(host):
@@ -151,7 +151,7 @@ class ArchiveUrlFetchHandler(BaseFetchHandler):
         except OSError as e:
             raise UnhandledSource(e.strerror)
         options = parse_qs(url_parts.fragment)
-        for key, value in options.items():
+        for key, value in list(options.items()):
             if not six.PY3:
                 algorithms = hashlib.algorithms
             else:

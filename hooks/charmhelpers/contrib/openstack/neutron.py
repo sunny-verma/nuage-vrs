@@ -356,7 +356,7 @@ def parse_data_port_mappings(mappings, default_bridge='br-data'):
         # config.
         _mappings = {mappings.split()[0]: default_bridge}
 
-    ports = _mappings.keys()
+    ports = list(_mappings.keys())
     if len(set(ports)) != len(ports):
         raise Exception("It is not allowed to have the same port configured "
                         "on more than one bridge")

@@ -195,7 +195,7 @@ class RequiredConfig(dict):
                 return False
         return True
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.__bool__()
 
 

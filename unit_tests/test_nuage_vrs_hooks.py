@@ -1,6 +1,6 @@
 from mock import patch, call
 
-from test_utils import (
+from .test_utils import (
     CharmTestCase,
 )
 import nuage_vrs_hooks as hooks

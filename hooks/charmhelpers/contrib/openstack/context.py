@@ -1369,10 +1369,10 @@ class NeutronAPIContext(OSContextGenerator):
 
     def get_neutron_options(self, rdata):
         settings = {}
-        for nkey in self.neutron_defaults.keys():
+        for nkey in list(self.neutron_defaults.keys()):
             defv = self.neutron_defaults[nkey]['default']
             rkey = self.neutron_defaults[nkey]['rel_key']
-            if rkey in rdata.keys():
+            if rkey in list(rdata.keys()):
                 if type(defv) is bool:
                     settings[nkey] = bool_from_string(rdata[rkey])
                 else:
@@ -1407,7 +1407,7 @@ class DataPortContext(NeutronPortContext):
         if ports:
             # Map of {port/mac:bridge}
             portmap = parse_data_port_mappings(ports)
-            ports = portmap.keys()
+            ports = list(portmap.keys())
             # Resolve provided ports or mac addresses and filter out those
             # already attached to a bridge.
             resolved = self.resolve_ports(ports)
@@ -1418,7 +1418,7 @@ class DataPortContext(NeutronPortContext):
                                if port in ports})
             if resolved:
                 return {normalized[port]: bridge for port, bridge in
-                        six.iteritems(portmap) if port in normalized.keys()}
+                        six.iteritems(portmap) if port in list(normalized.keys())}
 
         return None
 
@@ -1428,7 +1428,7 @@ class PhyNICMTUContext(DataPortContext):
     def __call__(self):
         ctxt = {}
         mappings = super(PhyNICMTUContext, self).__call__()
-        if mappings and mappings.keys():
+        if mappings and list(mappings.keys()):
             ports = sorted(mappings.keys())
             napi_settings = NeutronAPIContext()()
             mtu = napi_settings.get('network_device_mtu')

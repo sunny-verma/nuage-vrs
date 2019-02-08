@@ -139,7 +139,7 @@ def unmount_volume(config):
 
 def managed_mounts():
     '''List of all mounted managed volumes'''
-    return filter(lambda mount: mount[0].startswith(MOUNT_BASE), host.mounts())
+    return [mount for mount in host.mounts() if mount[0].startswith(MOUNT_BASE)]
 
 
 def configure_volume(before_change=lambda: None, after_change=lambda: None):
