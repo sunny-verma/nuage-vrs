@@ -1,0 +1,46 @@
+# vim: set ts=2:
+options:
+  vsc-controller-active:
+    type: string
+    description: Active VRS controller to use. This is mainly used when your Nuage-VSC is not deployed via JUJU, then you can mention your Active VSC IP.
+                 When Nuage-VSC is being deployed via juju charm and then configuration is optional as vsc-controller-active ip is being retrieved form relation-get
+                 and it will override this vsc-controller-active config value.
+    default: "1.1.1.1"
+
+  vsc-controller-standby:
+    type: string
+    description: Optional Standby VRS controller to use ( this is for redundant VSCs).
+                 This is mainly used when your Nuage-VSC is not deployed via JUJU, then you can mention your Standby VSC IP.
+                 When Nuage-VSC is being deployed via juju charm and then configuration is optional as vsc-controller-standby ip is being retrieved form relation-get
+                 and it will override this vsc-controller-active config value
+    default: "1.1.1.2"
+
+  vrs-packages:
+    type: string
+    default: "nuage-metadata-agent nuage-openvswitch-common nuage-openvswitch-datapath-dkms nuage-python-openvswitch nuage-openvswitch-switch"
+    description: List of packages to install for VRS. This is Optional as we already have all of them as default value.
+
+  vrs-repository-url:
+    type: string
+    default:
+    description: Nuage VRS repository containing Debian packages.This is must for installing vrs-packages
+
+  vrs-ppa-key:
+    type: string
+    default:
+    description: Optional KEY to Nuage VRS PPA containing Debian packages.
+
+  vrs-metadata-name:
+    type: string
+    default: nuage
+    description: This parameter is used to set the username when relation is established between nuage-vrs and keystone.
+
+  enable-metadata:
+    type: boolean
+    default: True
+    description: |
+      Enable Metadata Agents. This is useful for deployments
+      which do not include a neutron-gateway (do not require l3, lbaas or vpnaas
+      services) and should only be used in-conjunction with flat or VLAN provider
+      networks configurations.
+
