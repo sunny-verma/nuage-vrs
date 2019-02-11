@@ -700,13 +700,13 @@ def git_clone_and_install(projects_yaml, core_project):
 
     old_environ = dict(os.environ)
 
-    if 'http_proxy' in list(projects.keys()):
+    if 'http_proxy' in projects.keys():
         http_proxy = projects['http_proxy']
         os.environ['http_proxy'] = projects['http_proxy']
-    if 'https_proxy' in list(projects.keys()):
+    if 'https_proxy' in projects.keys():
         os.environ['https_proxy'] = projects['https_proxy']
 
-    if 'directory' in list(projects.keys()):
+    if 'directory' in projects.keys():
         parent_dir = projects['directory']
 
     pip_create_virtualenv(os.path.join(parent_dir, 'venv'))
@@ -721,7 +721,7 @@ def git_clone_and_install(projects_yaml, core_project):
         repo = p['repository']
         branch = p['branch']
         depth = '1'
-        if 'depth' in list(p.keys()):
+        if 'depth' in p.keys():
             depth = p['depth']
         if p['name'] == 'requirements':
             repo_dir = _git_clone_and_install_single(repo, branch, depth,
@@ -743,9 +743,9 @@ def _git_validate_projects_yaml(projects, core_project):
     _git_ensure_key_exists('repositories', projects)
 
     for project in projects['repositories']:
-        _git_ensure_key_exists('name', list(project.keys()))
-        _git_ensure_key_exists('repository', list(project.keys()))
-        _git_ensure_key_exists('branch', list(project.keys()))
+        _git_ensure_key_exists('name', project.keys())
+        _git_ensure_key_exists('repository', project.keys())
+        _git_ensure_key_exists('branch', project.keys())
 
     if projects['repositories'][0]['name'] != 'requirements':
         error_out('{} git repo must be specified first'.format('requirements'))
@@ -821,7 +821,7 @@ def git_pip_venv_dir(projects_yaml):
 
     projects = _git_yaml_load(projects_yaml)
 
-    if 'directory' in list(projects.keys()):
+    if 'directory' in projects.keys():
         parent_dir = projects['directory']
 
     return os.path.join(parent_dir, 'venv')
@@ -835,7 +835,7 @@ def git_src_dir(projects_yaml, project):
 
     projects = _git_yaml_load(projects_yaml)
 
-    if 'directory' in list(projects.keys()):
+    if 'directory' in projects.keys():
         parent_dir = projects['directory']
 
     for p in projects['repositories']:
@@ -851,7 +851,7 @@ def git_yaml_value(projects_yaml, key):
     """
     projects = _git_yaml_load(projects_yaml)
 
-    if key in list(projects.keys()):
+    if key in projects.keys():
         return projects[key]
 
     return None
@@ -986,11 +986,11 @@ def _ows_check_generic_interfaces(configs, required_interfaces):
     missing_relations = set()
     incomplete_relations = set()
 
-    for generic_interface, relations_states in list(incomplete_rel_data.items()):
+    for generic_interface, relations_states in incomplete_rel_data.items():
         related_interface = None
         missing_data = {}
         # Related or not?
-        for interface, relation_state in list(relations_states.items()):
+        for interface, relation_state in relations_states.items():
             if relation_state.get('related'):
                 related_interface = interface
                 missing_data = relation_state.get('missing_data')
@@ -1097,9 +1097,9 @@ def _ows_check_services_running(services, ports):
             # find which service has missing ports. They are in service
             # order which makes it a bit easier.
             message_parts = {service: ", ".join([str(v) for v in open_ports])
-                             for service, open_ports in list(map_not_open.items())}
+                             for service, open_ports in map_not_open.items()}
             message = ", ".join(
-                ["{}: [{}]".format(s, sp) for s, sp in list(message_parts.items())])
+                ["{}: [{}]".format(s, sp) for s, sp in message_parts.items()])
             messages.append(
                 "Services with ports not open that should be: {}"
                 .format(message))
@@ -1138,7 +1138,7 @@ def _extract_services_list_helper(services):
     if services is None:
         return {}
     if isinstance(services, dict):
-        services = list(services.values())
+        services = services.values()
     # either extract the list of services from the dictionary, or if
     # it is a simple string, use that. i.e. works with mixed lists.
     _s = OrderedDict()
@@ -1179,12 +1179,12 @@ def _check_listening_on_services_ports(services, test=False):
     @returns OrderedDict(service: [port-not-open, ...]...), [boolean]
     """
     test = not(not(test))  # ensure test is True or False
-    all_ports = list(itertools.chain(*list(services.values())))
+    all_ports = list(itertools.chain(*services.values()))
     ports_states = [port_has_listener('0.0.0.0', p) for p in all_ports]
     map_ports = OrderedDict()
     matched_ports = [p for p, opened in zip(all_ports, ports_states)
                      if opened == test]  # essentially opened xor test
-    for service, ports in list(services.items()):
+    for service, ports in services.items():
         set_ports = set(ports).intersection(matched_ports)
         if set_ports:
             map_ports[service] = set_ports
@@ -1201,7 +1201,7 @@ def _check_listening_on_ports_list(ports):
     @returns [(port_num, boolean), ...], [boolean]
     """
     ports_open = [port_has_listener('0.0.0.0', p) for p in ports]
-    return list(zip(ports, ports_open)), ports_open
+    return zip(ports, ports_open), ports_open
 
 
 def _filter_tuples(services_states, state):
@@ -1264,7 +1264,7 @@ def incomplete_relation_data(configs, required_interfaces):
     complete_ctxts = configs.complete_contexts()
     incomplete_relations = [
         svc_type
-        for svc_type, interfaces in list(required_interfaces.items())
+        for svc_type, interfaces in required_interfaces.items()
         if not set(interfaces).intersection(complete_ctxts)]
     return {
         i: configs.get_incomplete_context_data(required_interfaces[i])
@@ -1356,9 +1356,9 @@ def check_actually_paused(services=None, ports=None):
             _check_listening_on_services_ports(services, True))
         if any(ports_open_bools):
             message_parts = {service: ", ".join([str(v) for v in open_ports])
-                             for service, open_ports in list(ports_open.items())}
+                             for service, open_ports in ports_open.items()}
             message = ", ".join(
-                ["{}: [{}]".format(s, sp) for s, sp in list(message_parts.items())])
+                ["{}: [{}]".format(s, sp) for s, sp in message_parts.items()])
             messages.append(
                 "these service:ports are open: {}".format(message))
             state = 'blocked'
@@ -1443,7 +1443,7 @@ def pause_unit(assess_status_func, services=None, ports=None,
     services = _extract_services_list_helper(services)
     messages = []
     if services:
-        for service in list(services.keys()):
+        for service in services.keys():
             stopped = service_pause(service)
             if not stopped:
                 messages.append("{} didn't stop cleanly.".format(service))
@@ -1495,7 +1495,7 @@ def resume_unit(assess_status_func, services=None, ports=None,
     services = _extract_services_list_helper(services)
     messages = []
     if services:
-        for service in list(services.keys()):
+        for service in services.keys():
             started = service_resume(service)
             if not started:
                 messages.append("{} didn't start cleanly.".format(service))

@@ -1127,7 +1127,7 @@ def is_request_sent(request, relation='ceph'):
     @param request: A CephBrokerRq object
     """
     states = get_request_states(request, relation=relation)
-    for rid in list(states.keys()):
+    for rid in states.keys():
         if not states[rid]['sent']:
             return False
 
@@ -1143,7 +1143,7 @@ def is_request_complete(request, relation='ceph'):
     @param request: A CephBrokerRq object
     """
     states = get_request_states(request, relation=relation)
-    for rid in list(states.keys()):
+    for rid in states.keys():
         if not states[rid]['complete']:
             return False
 

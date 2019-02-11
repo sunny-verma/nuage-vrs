@@ -47,7 +47,7 @@ def create(sysctl_dict, sysctl_file):
         return
 
     with open(sysctl_file, "w") as fd:
-        for key, value in list(sysctl_dict_parsed.items()):
+        for key, value in sysctl_dict_parsed.items():
             fd.write("{}={}\n".format(key, value))
 
     log("Updating sysctl_file: %s values: %s" % (sysctl_file, sysctl_dict_parsed),

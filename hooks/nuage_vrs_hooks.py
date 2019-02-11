@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # vim: set et ts=4:
 
 import sys

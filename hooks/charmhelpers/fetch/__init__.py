@@ -32,7 +32,7 @@ import six
 if six.PY3:
     from urllib.parse import urlparse, urlunparse
 else:
-    from urllib.parse import urlparse, urlunparse
+    from urlparse import urlparse, urlunparse
 
 
 CLOUD_ARCHIVE = """# Ubuntu Cloud Archive
@@ -187,7 +187,7 @@ def apt_install(packages, options=None, fatal=False):
     if options is None:
         options = ['--option=Dpkg::Options::=--force-confold']
 
-    cmd = ['apt-get', '--assume-yes', '--allow-unauthenticated']
+    cmd = ['apt-get', '--assume-yes']
     cmd.extend(options)
     cmd.append('install')
     if isinstance(packages, six.string_types):

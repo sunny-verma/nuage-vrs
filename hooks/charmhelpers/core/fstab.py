@@ -67,7 +67,9 @@ class Fstab(io.FileIO):
     def _hydrate_entry(self, line):
         # NOTE: use split with no arguments to split on any
         #       whitespace including tabs
-        return Fstab.Entry(*[x for x in line.strip("\n").split() if x not in ('', None)])
+        return Fstab.Entry(*filter(
+            lambda x: x not in ('', None),
+            line.strip("\n").split()))
 
     @property
     def entries(self):

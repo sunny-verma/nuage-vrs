@@ -21,7 +21,7 @@ import os
 import re
 import six
 import time
-import urllib.request, urllib.parse, urllib.error
+import urllib
 
 import cinderclient.v1.client as cinder_client
 import glanceclient.v1.client as glance_client
@@ -282,9 +282,9 @@ class OpenStackAmuletUtils(AmuletUtils):
         self.log.debug('AMULET_HTTP_PROXY: {}'.format(http_proxy))
         if http_proxy:
             proxies = {'http': http_proxy}
-            opener = urllib.request.FancyURLopener(proxies)
+            opener = urllib.FancyURLopener(proxies)
         else:
-            opener = urllib.request.FancyURLopener()
+            opener = urllib.FancyURLopener()
 
         f = opener.open('http://download.cirros-cloud.net/version/released')
         version = f.read().strip()
@@ -622,7 +622,7 @@ class OpenStackAmuletUtils(AmuletUtils):
         :param sample_type: String for logging and usage context
         :returns: None if successful, Failure message otherwise
         """
-        original, created, deleted = list(range(3))
+        original, created, deleted = range(3)
         if samples[created] <= samples[original] or \
                 samples[deleted] >= samples[created]:
             return ('Ceph {} samples ({}) '

@@ -66,15 +66,32 @@ def config_value_changed(option):
 def update_config_file(config_file, key, value):
     """Updates or append configuration as key value pairs """
     insert_config = key + "=" + value
-    insert_config = insert_config.encode()
     with open(config_file, "r+") as vrs_file:
         mm = mmap.mmap(vrs_file.fileno(), 0)
         origFileSize = mm.size()
         newSize = len(insert_config)
-        mm.seek(0, os.SEEK_END)
-        mm.resize(origFileSize + len(insert_config) + 1)
-        mm.write(b'\n')
-        mm.write(insert_config)
+        search_str = '^\s*' + key
+        match = re.search(search_str, mm, re.MULTILINE)
+        if match is not None:
+            start_index = match.start()
+            end_index = mm.find("\n", match.end())
+            if end_index != -1:
+                origSize = end_index - start_index
+                if newSize > origSize:
+                    newFileSize = origFileSize + len(insert_config) - origSize
+                    mm.resize(newFileSize)
+                    mm[start_index + newSize:] = mm[end_index:origFileSize]
+                elif newSize < origSize:
+                    insert_config += (" " * (int(origSize) - int(newSize)))
+                    newSize = origSize
+                mm[start_index:start_index + newSize] = str(insert_config)
+            else:
+                mm.resize(start_index + len(insert_config))
+                mm[start_index:start_index + newSize] = str(insert_config)
+        else:
+            mm.seek(0, os.SEEK_END)
+            mm.resize(origFileSize + len(insert_config) + 1)
+            mm.write("\n" + insert_config)
         mm.close()
 
 
