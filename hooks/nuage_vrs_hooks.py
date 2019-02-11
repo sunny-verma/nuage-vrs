@@ -50,7 +50,7 @@ class ConfigurationError(Exception):
 @hooks.hook()
 def install():
     apt_update(fatal=True)
-    dependencies = 'libjson-perl python-twisted-core'
+    dependencies = 'libjson-perl python-twisted-core vlan qemu-kvm libvirt-bin'
     apt_install(dependencies.split(), fatal=True)
 
 
