@@ -96,9 +96,13 @@ def update_config_file(config_file, key, value):
 
 
 def create_nuage_metadata_file(username, password, tenant,
-                               keystone_ip, host_ip_address):
+                               keystone_ip, host_ip_address,
+                               api_version, region, domain):
     metadata_file = '/etc/default/nuage-metadata-agent'
-    AUTH_URL = "http://" + str(keystone_ip) + ":5000/v2.0"
+    if domain:
+        AUTH_URL = "http://" + str(keystone_ip) + ":5000/v3"
+    else:
+        AUTH_URL = "http://" + str(keystone_ip) + ":5000/v2.0"
 
     update_config_file(metadata_file, "METADATA_PORT", str(9697))
     update_config_file(metadata_file, "NOVA_METADATA_IP", str(host_ip_address))
@@ -113,7 +117,14 @@ def create_nuage_metadata_file(username, password, tenant,
     update_config_file(metadata_file, "NUAGE_METADATA_AGENT_START_WITH_OVS",
                        "true")
     update_config_file(metadata_file, "NOVA_API_ENDPOINT_TYPE", "publicURL")
-    update_config_file(metadata_file, "NOVA_REGION_NAME", "RegionOne")
+    update_config_file(metadata_file, "NOVA_REGION_NAME", str(region))
+    if domain:
+        update_config_file(metadata_file, "NOVA_PROJECT_NAME", str(tenant))
+        update_config_file(metadata_file, "NOVA_USER_DOMAIN_NAME", str(domain))
+        update_config_file(metadata_file, "NOVA_PROJECT_DOMAIN_NAME", str(domain))
+        update_config_file(metadata_file, "IDENTITY_URL_VERSION", str(api_version))
+        update_config_file(metadata_file, "NOVA_OS_KEYSTONE_USERNAME", str(username))
+
 
 
 def vrs_full_restart():
