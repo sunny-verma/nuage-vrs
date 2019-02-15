@@ -50,7 +50,7 @@ class ConfigurationError(Exception):
 @hooks.hook()
 def install():
     apt_update(fatal=True)
-    dependencies = 'libjson-perl python-twisted-core'
+    dependencies = 'libjson-perl python-twisted-core vlan qemu-kvm libvirt-bin'
     apt_install(dependencies.split(), fatal=True)
 
 
@@ -146,11 +146,18 @@ def vrs_set_credentials_for_metadata_agent(relation_id=None, remote_unit=None):
     tenant = relation_get("credentials_project")
     keystone_ip = relation_get("private-address")
     host_ip_address = get_host_ip(unit_get('private-address'))
-    log("username:{}, password:{}, tenant:{}, keystone_ip:{}, private_ip: {}"
-        .format(username, password, tenant, keystone_ip, host_ip_address))
+    api_version = relation_get('api_version')
+    region = relation_get('region')
+    domain = relation_get('domain')
+
+    log("username:{}, password:{}, tenant:{}, keystone_ip:{},
+            private_ip: {}, api_version: {}, region: {}, domain: {}"
+        .format(username, password, tenant, keystone_ip,
+            host_ip_address, api_version, region, domain))
     create_nuage_metadata_file(username, password,
                                tenant, keystone_ip,
-                               host_ip_address)
+                               host_ip_address, api_version,
+                               region, domain)
     vrs_full_restart()
 
 

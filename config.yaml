@@ -17,7 +17,7 @@ options:
 
   vrs-packages:
     type: string
-    default: "nuage-metadata-agent nuage-openvswitch-common nuage-openvswitch-datapath-dkms nuage-python-openvswitch nuage-openvswitch-switch"
+    default: "nuage-metadata-agent nuage-openvswitch-common nuage-python-openvswitch nuage-openvswitch-switch"
     description: List of packages to install for VRS. This is Optional as we already have all of them as default value.
 
   vrs-repository-url:
