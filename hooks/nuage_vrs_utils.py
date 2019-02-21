@@ -121,9 +121,12 @@ def create_nuage_metadata_file(username, password, tenant,
     if domain:
         update_config_file(metadata_file, "NOVA_PROJECT_NAME", str(tenant))
         update_config_file(metadata_file, "NOVA_USER_DOMAIN_NAME", str(domain))
-        update_config_file(metadata_file, "NOVA_PROJECT_DOMAIN_NAME", str(domain))
-        update_config_file(metadata_file, "IDENTITY_URL_VERSION", str(api_version))
-        update_config_file(metadata_file, "NOVA_OS_KEYSTONE_USERNAME", str(username))
+        update_config_file(metadata_file, "NOVA_PROJECT_DOMAIN_NAME",
+                           str(domain))
+        update_config_file(metadata_file, "IDENTITY_URL_VERSION",
+                           str(api_version))
+        update_config_file(metadata_file, "NOVA_OS_KEYSTONE_USERNAME",
+                           str(username))
 
 
 

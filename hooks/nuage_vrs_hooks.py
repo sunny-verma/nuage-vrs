@@ -153,7 +153,7 @@ def vrs_set_credentials_for_metadata_agent(relation_id=None, remote_unit=None):
     log("username:{}, password:{}, tenant:{}, keystone_ip:{},"
         "private_ip: {}, api_version: {}, region: {}, domain: {}"
         .format(username, password, tenant, keystone_ip,
-            host_ip_address, api_version, region, domain))
+                host_ip_address, api_version, region, domain))
     create_nuage_metadata_file(username, password,
                                tenant, keystone_ip,
                                host_ip_address, api_version,
