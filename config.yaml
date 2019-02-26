@@ -34,7 +34,6 @@ options:
     type: string
     default: nuage
     description: This parameter is used to set the username when relation is established between nuage-vrs and keystone.
-
   enable-metadata:
     type: boolean
     default: True
@@ -43,4 +42,12 @@ options:
       which do not include a neutron-gateway (do not require l3, lbaas or vpnaas
       services) and should only be used in-conjunction with flat or VLAN provider
       networks configurations.
+  bridge-mtu:
+    type: string
+    default: 
+    description: This is the MTU which the OVS will use.
+  network-uplink-interface:
+    type: string
+    default: ""
+    description: uplink interface of the host
 

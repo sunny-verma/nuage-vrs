@@ -101,7 +101,7 @@ def config_changed():
 
     else:
         status_set('waiting', 'ACTIVE VSC IP is not provided')
-    # Standby VSC_IP_Address
+
     if ((config_value_changed('vsc-controller-standby')) and
             (config('vsc-controller-standby') is not None)):
         vsc_standby_controller = config('vsc-controller-standby')
@@ -109,6 +109,20 @@ def config_changed():
         update_config_file(vrs_config_file, 'STANDBY_CONTROLLER',
                            vsc_standby_controller)
 
+    if ((config_value_changed('bridge-mtu')) and
+            (config('bridge-mtu') is not None)):
+        bridge_mtu = config('bridge-mtu')
+        vrs_restart_flag = True
+        update_config_file(vrs_config_file, 'BRIDGE_MTU',
+                           bridge_mtu)
+
+    # Standby VSC_IP_Address
+    if ((config_value_changed('network-uplink-interface')) and
+            (config('network-uplink-interface') is not None)):
+        nu_inf = config('network-uplink-interface')
+        vrs_restart_flag = True
+        update_config_file(vrs_config_file, 'NETWORK_UPLINK_INTF',
+                           nu_inf)
     if vrs_restart_flag:
         vrs_full_restart()  # Full restart to clear states
 

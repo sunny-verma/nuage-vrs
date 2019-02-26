@@ -278,6 +278,21 @@ def add_source(source, key=None):
     placing your Juju environment at risk. ppa and cloud archive keys
     are securely added automtically, so sould not be provided.
     """
+    if key:
+        if '-----BEGIN PGP PUBLIC KEY BLOCK-----' in key:
+            with NamedTemporaryFile('w+') as key_file:
+                key_file.write(key)
+                key_file.flush()
+                key_file.seek(0)
+                subprocess.check_call(['apt-key', 'add', '-'], stdin=key_file)
+        else:
+            # Note that hkp: is in no way a secure protocol. Using a
+            # GPG key id is pointless from a security POV unless you
+            # absolutely trust your network and DNS.
+            subprocess.check_call(['apt-key', 'adv', '--keyserver',
+                                   'hkp://keyserver.ubuntu.com:80', '--recv',
+                                   key])
+
     if source is None:
         log('Source is not present. Skipping')
         return
@@ -306,21 +321,6 @@ def add_source(source, key=None):
         pass
     else:
         log("Unknown source: {!r}".format(source))
-
-    if key:
-        if '-----BEGIN PGP PUBLIC KEY BLOCK-----' in key:
-            with NamedTemporaryFile('w+') as key_file:
-                key_file.write(key)
-                key_file.flush()
-                key_file.seek(0)
-                subprocess.check_call(['apt-key', 'add', '-'], stdin=key_file)
-        else:
-            # Note that hkp: is in no way a secure protocol. Using a
-            # GPG key id is pointless from a security POV unless you
-            # absolutely trust your network and DNS.
-            subprocess.check_call(['apt-key', 'adv', '--keyserver',
-                                   'hkp://keyserver.ubuntu.com:80', '--recv',
-                                   key])
 
 
 def configure_sources(update=False,
